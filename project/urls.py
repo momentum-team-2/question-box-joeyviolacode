@@ -22,7 +22,7 @@ from core import views as core_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include("registration.backends.simple.urls")),
-    path('', core_views.list_questions, name="list_questions")
+    path('', core_views.ListQuestions.as_view(), name="list_questions")
 ]
 
 if settings.DEBUG:

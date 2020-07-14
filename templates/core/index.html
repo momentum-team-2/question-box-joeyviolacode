@@ -2,8 +2,24 @@
 
 {% block content %}
 <div>
-    <h1> Test! </h1>   
+    <h1> Here are questions </h1>   
     {% load markdownify %}
-    {{ stuff|markdownify }}
+    <!-- {{ stuff|markdownify }} -->
+    <div class="question-div">
+        {% for question in questions %}
+        <div class="question-pane">
+            <div class="test-border">
+            <div>{{question.body|markdownify}}</div>
+            <p>by {{question.author.username}} on {{question.edited}} </p>
+            </div>
+            {% for answer in question.answers.all %}
+            <div class="test-border">
+            <div>{{ answer.body }}</div>
+            <p>answered by {{answer.author.username}} on {{answer.created}}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
