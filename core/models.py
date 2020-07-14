@@ -8,9 +8,19 @@ class Question(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="questions")
+    faved_by = models.ManyToManyField(User, related_name="q_faves", blank=True)
+
+     
+    def __str__(self):
+        return f"{self.title} -  {self.author}"
 
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="answers")
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="answers")  # Is this a problem?
     created = models.DateTimeField(auto_now_add=True)
+    faved_by = models.ManyToManyField(User, related_name="a_faves", blank=True)
+    body = models.TextField()
+
+    def __str__(self):
+        return f"Answer to: {self.question} - {self.author}"
