@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <h1> Here is a question </h1>   
+    {% load markdownify %}
+    <div class="question-div">
+        <div class="question-pane">
+            <div class="test-border">
+            <div>{{question.body|markdownify}}</div>
+                <p>by {{question.author.username}} on {{question.edited}}</p>
+                {% if question in user.q_faves.all %}
+                    <p>This is a fave.</p>
+                {% else %}
+                    <p>This is not a fave.</p>
+                {% endif %}
+            </div>
+            {% for answer in question.answers.all %}
+            <div class="test-border">
+                <div>{{ answer.body|markdownify }}</div>
+                    <p>answered by {{answer.author.username}} on {{answer.created}}</p>
+                    {% if question in user.a_faves.all %}
+                    <p>This is a fave.</p>
+                    {% else %}
+                    <p>This is not a fave.</p>
+                    {% endif %}
+                    <a href="{% url 'delete_answer' pk=answer.pk %}">Delete Answer</a>
+                </div>
+            </div>
+            {% endfor %}
+            <h3>Add answer:</h3>
+            <form action="{% url 'add_answer' pk=question.pk %}" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div>
+                    <button type="submit">Add Answer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

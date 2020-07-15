@@ -2,9 +2,8 @@
 
 {% block content %}
 <div>
-    <h1> Here are questions </h1>   
+    <h1> Here are {{user.username}}'s questions:</h1>   
     {% load markdownify %}
-    {{ stuff|markdownify}}
     <div class="question-div">
         {% for question in questions %}
         <div class="question-pane">
@@ -19,18 +18,6 @@
             {% endif %}
             <a href="{% url 'delete_question' pk=question.pk %}">Delete Question</a>
             </div>
-            {% for answer in question.answers.all %}
-            <div class="test-border">
-                <div>{{ answer.body|markdownify }}</div>
-                    <p>answered by {{answer.author.username}} on {{answer.created}}</p>
-                    {% if answer in user.a_faves.all %}
-                    <p>This is a fave.</p>
-                    {% else %}
-                    <p>This is not a fave.</p>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
         </div>
         {% endfor %}
     </div>

@@ -20,6 +20,10 @@ header {
     color: white;
 }
 
+code {
+    white-space: pre-wrap;
+}
+
 .header-box {
     display: flex;
     justify-content: space-between;
