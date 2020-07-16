@@ -21,6 +21,7 @@ class Answer(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     faved_by = models.ManyToManyField(User, related_name="a_faves", blank=True)
     body = models.TextField()
+    is_correct = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Answer to: {self.question} - {self.author}"
+        return f"Answer to: {self.question.title} by {self.author}"
