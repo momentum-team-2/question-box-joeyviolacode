@@ -29,6 +29,8 @@ urlpatterns = [
     path('answer/<int:pk>/delete', core_views.DeleteAnswer.as_view(), name="delete_answer"),
     path('question/<int:pk>/delete', core_views.DeleteQuestion.as_view(), name="delete_question"),
     path('user/<int:pk>', core_views.UserProfile.as_view(), name="user_profile"),
+    path('question/<int:pk>/fave', core_views.ToggleFavoriteQuestion.as_view(), name="toggle_question_fave"),
+    path('answer/<int:pk>/fave', core_views.ToggleFavoriteAnswer.as_view(), name="toggle_answer_fave"),
 ]
 
 if settings.DEBUG:

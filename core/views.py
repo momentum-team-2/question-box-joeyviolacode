@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from .models import Answer, Question
 from .forms import AnswerForm, QuestionForm
 from users.models import User
 from django.views import View
+from django.http import JsonResponse
 
 # Create your views here.
 # def list_questions(request):
@@ -17,7 +20,7 @@ class ListQuestions(View):
         
     def get(self, request):
         user = request.user
-        questions = Question.objects.all()
+        questions = Question.objects.order_by("-created")
         return render(request, 'core/index.html', {"questions":questions, "user":user})
 
 
@@ -84,9 +87,34 @@ class DeleteQuestion(View):
         else: 
             return redirect(to='list_questions')
         
-        
+
 class UserProfile(View):
     def get(self, request, pk):
         user = get_object_or_404(User, pk=pk)
         questions = Question.objects.filter(author=user)
         return render(request, 'core/user_profile.html', {"user":user, "questions":questions})
+
+@method_decorator(csrf_exempt, name="dispatch")
+class ToggleFavoriteAnswer(View):
+    def post(self, request, pk):
+        user = request.user
+        answer = get_object_or_404(Answer, pk=pk)
+        if answer in user.a_faves.all():
+            user.a_faves.remove(answer)
+            return JsonResponse({"favorite": False})
+        else:
+            user.a_faves.add(answer)
+            return JsonResponse({"favorite": True})
+
+@method_decorator(csrf_exempt, name="dispatch")
+class ToggleFavoriteQuestion(View):
+
+    def post(self, request, pk):
+        user = request.user
+        question = get_object_or_404(Question, pk=pk)
+        if question in user.q_faves.all():
+            user.q_faves.remove(question)
+            return JsonResponse({"favorite": False})
+        else:
+            user.q_faves.add(question)
+            return JsonResponse({"favorite": True})
