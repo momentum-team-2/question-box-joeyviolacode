@@ -90,9 +90,10 @@ class DeleteQuestion(View):
 
 class UserProfile(View):
     def get(self, request, pk):
-        user = get_object_or_404(User, pk=pk)
-        questions = Question.objects.filter(author=user)
-        return render(request, 'core/user_profile.html', {"user":user, "questions":questions})
+        question_user = get_object_or_404(User, pk=pk)
+        user = request.user
+        questions = Question.objects.filter(author=question_user)
+        return render(request, 'core/user_profile.html', {"user":user, "questions":questions, "question_user": question_user})
 
 @method_decorator(csrf_exempt, name="dispatch")
 class ToggleFavoriteAnswer(View):

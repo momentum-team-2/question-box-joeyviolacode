@@ -2,7 +2,7 @@
 
 {% block content %}
 <div>
-    <h1> Here are {{user.username}}'s questions:</h1>   
+    <h1> Here are {{question_user.username}}'s questions:</h1>   
     {% load markdownify %}
     <div class="question-div">
         {% for question in questions %}
@@ -12,14 +12,54 @@
             <div>{{question.body|markdownify}}</div>
             <p>by {{question.author.username}} on {{question.edited}}</p>
             {% if question in user.q_faves.all %}
-                <p>This is a fave.</p>
+            <a data-questionid="{{question.pk}}" class="q-toggler" id="q-favorite-toggle" href="#">&#x2605;</a>
             {% else %}
-                <p>This is not a fave.</p>
+            <a data-questionid="{{question.pk}}" class="q-toggler" id="q-favorite-toggle" href="#">&#x2606;</a>
             {% endif %}
+            {% if question in user.questions.all %}
             <a href="{% url 'delete_question' pk=question.pk %}">Delete Question</a>
+            {% endif %}
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<script>
+    const qTogglerList = document.querySelectorAll(".q-toggler")    
+    for (let toggler of qTogglerList) {
+    toggler.addEventListener("click", (e) => {
+        e.preventDefault()
+        const questionPk = toggler.dataset.questionid
+        fetch(`/question/${questionPk}/fave`, {
+            method: 'POST'
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.favorite) {
+                toggler.innerHTML = "&#x2605;"
+            } else {
+                toggler.innerHTML = "&#x2606;"
+            }
+        })
+    })}
+
+    const aTogglerList = document.querySelectorAll(".a-toggler")    
+    for (let toggler of aTogglerList) {
+    toggler.addEventListener("click", (e) => {
+        e.preventDefault()
+        const answerPk = toggler.dataset.answerid
+        fetch(`/answer/${answerPk}/fave`, {
+            method: 'POST'
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.favorite) {
+                toggler.innerHTML = "&#x2605;"
+            } else {
+                toggler.innerHTML = "&#x2606;"
+            }
+        })
+    })}
+</script>
 {% endblock %}

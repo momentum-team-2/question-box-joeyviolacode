@@ -40,6 +40,9 @@
                     {% if answer in user.answers.all %}
                     <a href="{% url 'delete_answer' pk=answer.pk %}">Delete Answer</a>
                     {% endif %}
+                    {% if user == answer.question.author %}
+                        <p>This test works to show that this answer belongs to a question by THIS user.</p>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
