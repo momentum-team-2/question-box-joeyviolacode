@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.core.mail import send_mail
+from project.settings import EMAIL_HOST_USER
 from .models import Answer, Question
 from .forms import AnswerForm, QuestionForm
 from users.models import User
@@ -59,6 +61,14 @@ class AddAnswer(View):
             answer.author = user
             answer.question = question
             answer.save()
+            send_mail(
+                f'Your question, {answer.question.title}, has received an answer!',
+                f'''{answer.author.username} has answered your question-box question with the following:\n\n{answer.body}
+                    \n\nYou can view your question and all of its answers here:  http://127.0.0.1:8000/question/{answer.question.pk}''',
+                EMAIL_HOST_USER,
+                [answer.question.author.email],
+                fail_silently=False,
+            )
         return redirect(to="show_question", pk=pk)
 
 
@@ -73,7 +83,6 @@ class DeleteAnswer(View):
             return redirect(to='show_question', pk=redirect_pk)
         else: 
             return redirect(to='list_questions')
-        
 
 
 class DeleteQuestion(View): 
@@ -86,7 +95,7 @@ class DeleteQuestion(View):
             return redirect(to='list_questions')
         else: 
             return redirect(to='list_questions')
-        
+
 
 class UserProfile(View):
     def get(self, request, pk):
@@ -94,6 +103,7 @@ class UserProfile(View):
         user = request.user
         questions = Question.objects.filter(author=question_user)
         return render(request, 'core/user_profile.html', {"user":user, "questions":questions, "question_user": question_user})
+
 
 @method_decorator(csrf_exempt, name="dispatch")
 class ToggleFavoriteAnswer(View):
@@ -107,9 +117,9 @@ class ToggleFavoriteAnswer(View):
             user.a_faves.add(answer)
             return JsonResponse({"favorite": True})
 
+
 @method_decorator(csrf_exempt, name="dispatch")
 class ToggleFavoriteQuestion(View):
-
     def post(self, request, pk):
         user = request.user
         question = get_object_or_404(Question, pk=pk)
@@ -119,3 +129,17 @@ class ToggleFavoriteQuestion(View):
         else:
             user.q_faves.add(question)
             return JsonResponse({"favorite": True})
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class ToggleCorrectAnswer(View):
+    def post(self, request, pk):
+        user = request.user
+        answer = get_object_or_404(Answer, pk=pk)
+        if user == answer.question.author:
+            answer.is_correct = not answer.is_correct
+            answer.save()
+            return JsonResponse({"correct": answer.is_correct})
+        else:
+            return redirect(to="list_questions")
+

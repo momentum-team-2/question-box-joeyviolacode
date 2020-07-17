@@ -43,6 +43,19 @@
                     {% if user == answer.question.author %}
                         <p>This test works to show that this answer belongs to a question by THIS user.</p>
                     {% endif %}
+                    {% if answer.is_correct %}
+                        {% if user == answer.question.author %}
+                        <a data-answerid="{{answer.pk}}" class="c-toggler" href="#">&#x2713;  &#x2714;</a>
+                        {% else %}
+                        <p>&#x2713;  &#x2714;</p>
+                        {% endif %}
+                    {% else %}
+                        {% if user == answer.question.author %}
+                        <a data-answerid="{{answer.pk}}" class="c-toggler" href="#">&#x25EF;</a>
+                        {% else %}
+                        <p>&#x25EF;</p>
+                        {% endif %}
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
@@ -91,6 +104,25 @@
                 toggler.innerHTML = "&#x2605;"
             } else {
                 toggler.innerHTML = "&#x2606;"
+            }
+        })
+    })}
+
+    const cTogglerList = document.querySelectorAll(".c-toggler")    
+    for (let toggler of cTogglerList) {
+    toggler.addEventListener("click", (e) => {
+        e.preventDefault()
+        const answerPk = toggler.dataset.answerid
+        fetch(`/answer/${answerPk}/correct`, {
+            method: 'POST'
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.correct)
+            if (data.correct) {
+                toggler.innerHTML = "&#x2713;  &#x2714;"
+            } else {
+                toggler.innerHTML = "&#x25EF;"
             }
         })
     })}
