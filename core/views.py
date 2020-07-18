@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.postgres.search import SearchVector
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -96,13 +97,23 @@ class DeleteQuestion(View):
         else: 
             return redirect(to='list_questions')
 
+class SearchQuestions(View):
+    def get(self, request):
+        query = request.GET.get('query')
+        if query is not None:
+            questions = Question.objects.annotate(search=SearchVector("title", "body", "answers__body")).filter(search=query).distinct()
+        else:
+            questions = None
+        return render(request, 'core/search_results.html', {"questions": questions, "query": query or ""})
+
 
 class UserProfile(View):
     def get(self, request, pk):
         question_user = get_object_or_404(User, pk=pk)
         user = request.user
         questions = Question.objects.filter(author=question_user)
-        return render(request, 'core/user_profile.html', {"user":user, "questions":questions, "question_user": question_user})
+        return render(request, 'core/user_profile.html', 
+                        {"user":user, "questions":questions, "question_user": question_user})
 
 
 @method_decorator(csrf_exempt, name="dispatch")

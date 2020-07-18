@@ -32,6 +32,7 @@ urlpatterns = [
     path('question/<int:pk>/fave', core_views.ToggleFavoriteQuestion.as_view(), name="toggle_question_fave"),
     path('answer/<int:pk>/fave', core_views.ToggleFavoriteAnswer.as_view(), name="toggle_answer_fave"),
     path('answer/<int:pk>/correct', core_views.ToggleCorrectAnswer.as_view(), name="toggle_answer_correct"),
+    path('questions/search_results', core_views.SearchQuestions.as_view(), name="search"),
 ]
 
 if settings.DEBUG:

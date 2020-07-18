@@ -2,7 +2,7 @@
 
 {% block content %}
 <div>
-    <h1> Here are questions </h1>   
+    <h1> Here are the questions that match your search for: {{query}}</h1>   
     {% load markdownify %}
     <div class="question-div">
         {% for question in questions %}
