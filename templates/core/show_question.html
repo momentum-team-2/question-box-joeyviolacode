@@ -20,9 +20,9 @@
             <div>{{question.body|markdownify}}</div>
                 <p>by <a href="{% url 'user_profile' pk=question.author.pk %}">{{question.author.username}}</a> on {{question.edited}}</p>
                 {% if question in user.q_faves.all %}
-                <a data-questionid="{{question.pk}}" class="q-toggler" id="q-favorite-toggle" href="#">&#x2605;</a>
+                <a data-questionid="{{question.pk}}" class="q-toggler icon-a" id="q-favorite-toggle" href="#">&#x2605;</a>
                 {% else %}
-                <a data-questionid="{{question.pk}}" class="q-toggler" id="q-favorite-toggle" href="#">&#x2606;</a>
+                <a data-questionid="{{question.pk}}" class="q-toggler icon-a" id="q-favorite-toggle" href="#">&#x2606;</a>
                 {% endif %}
                 {% if question in user.questions.all %}
                 <a href="{% url 'delete_question' pk=question.pk %}">Delete Question</a>
@@ -33,9 +33,9 @@
                 <div>{{ answer.body|markdownify }}</div>
                     <p>answered by <a href="{% url 'user_profile' pk=answer.author.pk %}">{{answer.author.username}}</a> on {{answer.created}}</p>
                     {% if answer in user.a_faves.all %}
-                    <a data-answerid="{{answer.pk}}" class="a-toggler" href="#">&#x2605;</a>
+                    <a data-answerid="{{answer.pk}}" class="a-toggler icon-a" href="#">&#x2605;</a>
                     {% else %}
-                    <a data-answerid="{{answer.pk}}" class="a-toggler" href="#">&#x2606;</a>
+                    <a data-answerid="{{answer.pk}}" class="a-toggler icon-a" href="#">&#x2606;</a>
                     {% endif %}
                     {% if answer in user.answers.all %}
                     <a href="{% url 'delete_answer' pk=answer.pk %}">Delete Answer</a>
@@ -45,13 +45,13 @@
                     {% endif %}
                     {% if answer.is_correct %}
                         {% if user == answer.question.author %}
-                        <a data-answerid="{{answer.pk}}" class="c-toggler" href="#">&#x2713;  &#x2714;</a>
+                        <a data-answerid="{{answer.pk}}" class="c-toggler icon-a" href="#">&#x2713;  &#x2714;</a>
                         {% else %}
                         <p>&#x2713;  &#x2714;</p>
                         {% endif %}
                     {% else %}
                         {% if user == answer.question.author %}
-                        <a data-answerid="{{answer.pk}}" class="c-toggler" href="#">&#x25EF;</a>
+                        <a data-answerid="{{answer.pk}}" class="c-toggler icon-a" href="#">&#x25EF;</a>
                         {% else %}
                         <p>&#x25EF;</p>
                         {% endif %}
