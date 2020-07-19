@@ -100,26 +100,44 @@ class DeleteQuestion(View):
 class EditAnswer(View):
     def get(self, request, pk):
         answer = get_object_or_404(Answer, pk=pk)
-        pass
+        form= AnswerForm(instance=answer)
+        user = request.user
+        if bool(Answer.objects.filter(author=user, pk=pk).count()):
+            return render(request, 'core/edit_answer.html', {"question":answer.question, "answer":answer, "form":form})
+        else: 
+            return redirect(to="show_question", pk=answer.question.pk)
 
-    def ost(self, request, pk):
-        pass
+    def post(self, request, pk):
+        user = request.user
+        answer = get_object_or_404(Answer, pk=pk)
+        form = AnswerForm(data=request.POST, instance=answer)
+        form.save()
+        return redirect(to="show_question", pk=answer.question.pk)
 
 
 class EditQuestion(View):
     def get(self, request, pk):
         question = get_object_or_404(Question, pk=pk)
-        pass
+        form = QuestionForm(instance=question)
+        user = request.user
+        if bool(Question.objects.filter(author=user, pk=pk).count()):
+            return render(request, 'core/edit_question.html', {"form":form})
+        else: 
+            return redirect(to="list_questions")
 
     def post(self, request, pk):
-        pass
+        user = request.user
+        question = get_object_or_404(Question, pk=pk)
+        form = QuestionForm(data=request.POST, instance=question)
+        form.save()
+        return redirect(to="show_question", pk=pk)
 
 
 class SearchQuestions(View):
     def get(self, request):
         query = request.GET.get('query')
         if query is not None:
-            questions = Question.objects.annotate(search=SearchVector("title", "body", "answers__body")).filter(search=query).distinct()
+            questions = Question.objects.annotate(search=SearchVector("title", "body", "answers__body", "author__username")).filter(search=query).distinct("id").order_by("-pk")
         else:
             questions = None
         return render(request, 'core/search_results.html', {"questions": questions, "query": query or ""})

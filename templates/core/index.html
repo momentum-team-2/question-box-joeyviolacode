@@ -27,22 +27,13 @@
                 <div class="flex-space">
                     <p class="attribution">by <a href="{% url 'user_profile' pk=question.author.pk %}">{{question.author.username}}</a> on {{question.edited}}</p>
                     {% if question in user.questions.all %}
-                    <a href="{% url 'delete_question' pk=question.pk %}">Delete Question</a>
+                        <div>
+                            <a href="{% url 'edit_question' pk=question.pk %}">Edit Question</a>
+                            <a href="{% url 'delete_question' pk=question.pk %}">Delete Question</a>
+                        </div>
                     {% endif %}
                 </div>
             </div>
-            <!-- {% for answer in question.answers.all %}
-            <div class="test-border">
-                <div>{{ answer.body|markdownify }}</div>
-                    <p>answered by {{answer.author.username}} on {{answer.created}}</p>
-                    {% if answer in user.a_faves.all %}
-                    <p>This is a fave.</p>
-                    {% else %}
-                    <p>This is not a fave.</p>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %} -->
         </div>
         {% endfor %}
     </div>

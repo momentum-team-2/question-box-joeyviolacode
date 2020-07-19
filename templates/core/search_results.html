@@ -17,10 +17,15 @@
                 <a data-questionid="{{question.pk}}" class="q-toggler icon-a question-title-top toggler" id="q-favorite-toggle" href="#">&#x2606;</a>
                 {% endif %}
             </div>
-            <p class="attribution">by <a href="{% url 'user_profile' pk=question.author.pk %}">{{question.author.username}}</a> on {{question.edited}}</p>
-            {% if question in user.questions.all %}
-            <a href="{% url 'delete_question' pk=question.pk %}">Delete Question</a>
-            {% endif %}
+            <div class="flex-space">
+                <p class="attribution">by <a href="{% url 'user_profile' pk=question.author.pk %}">{{question.author.username}}</a> on {{question.edited}}</p>
+                {% if question in user.questions.all %}
+                <div>
+                    <a href="{% url 'edit_question' pk=question.pk %}">Edit Question</a>
+                    <a href="{% url 'delete_question' pk=question.pk %}">Delete Question</a>
+                </div>
+                {% endif %}
+            </div>
             </div>
             <!-- {% for answer in question.answers.all %}
             <div class="test-border">

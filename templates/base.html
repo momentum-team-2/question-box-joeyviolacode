@@ -13,7 +13,7 @@
 <body>
     <header class="header-box">
       <div class="header-left">
-        <div><h1>Question Box</h1></div>
+        <div><a class="title-link" href="{% url 'list_questions' %}"><h1>Question Box</h1></a></div>
       </div>
       <div class="header-search v-center">
         <form action="{% url 'search' %}" class="" method="get">

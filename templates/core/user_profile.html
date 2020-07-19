@@ -2,9 +2,41 @@
 
 {% block content %}
 <div>
-    <h1> Here are {{question_user.username}}'s questions:</h1>   
+    <div class="question-show centerer">
+        <h2 class="question-header"> 
+            Here are {{question_user.username}}'s questions:
+        </h2>
+        <div></div>
+        <div class="list-link-div v-center">
+            <a href="{% url 'list_questions' %}" class="list-link">Home</a>
+        </div>
+    </div>   
     {% load markdownify %}
-    <div class="question-div">
+    {%for question in questions%}
+    <div class="test-border question-box">
+        <div class="flex-space">
+            <h4 class="question-title-top"><a href="{% url 'show_question' pk=question.pk %}">{{question.title}}</a></h4>
+            <div class="flex-v-space">
+            {% if question in user.q_faves.all %}
+            <a data-questionid="{{question.pk}}" class="q-toggler icon-a question-title-top toggler" href="#">&#x2605;</a>
+            {% else %}
+            <a data-questionid="{{question.pk}}" class="q-toggler icon-a question-title-top toggler" href="#">&#x2606;</a>
+            {% endif %}
+            </div>
+        </div>
+        <div class="qa-body">{{question.body|markdownify}}</div>
+        <div class="flex-space">
+            <p class="attribution">by <a href="{% url 'user_profile' pk=question.author.pk %}">{{question.author.username}}</a> on {{question.edited}}</p>
+            {% if question in user.questions.all %}
+            <div>
+                <a href="{% url 'edit_question' pk=question.pk %}">Edit Question</a>
+                <a href="{% url 'delete_question' pk=question.pk %}">Delete Question</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    <!-- <div class="question-div">
         {% for question in questions %}
         <div class="question-pane">
             <div class="test-border">
@@ -22,7 +54,7 @@
             </div>
         </div>
         {% endfor %}
-    </div>
+    </div> -->
 </div>
 
 <script>
