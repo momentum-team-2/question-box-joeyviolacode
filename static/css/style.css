@@ -29,6 +29,13 @@ h4 {
     transform: scale(1.5);
 }
 
+.button-holder {
+    /* padding-top: 10px;
+    padding-right: 10px; */
+    display: flex;
+    flex-direction: column;
+}
+
 
 header {
     background-color:#8D6425;
@@ -70,6 +77,15 @@ code {
     margin: 0 auto;
 }
 
+.qa-body {
+    padding: 10px;
+}
+
+.qa-body > p {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
 .v-center {
     display: flex;
     flex-direction: column;
@@ -84,6 +100,12 @@ code {
 
 .flex-space {
     display: flex;
+    justify-content: space-between;
+}
+
+.flex-v-space {
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
 }
 
@@ -115,6 +137,7 @@ code {
 
 .attribution {
     font-size: 12px;
+    padding-left: 40px;
 }
 
 .icon-a {

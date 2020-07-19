@@ -97,6 +97,24 @@ class DeleteQuestion(View):
         else: 
             return redirect(to='list_questions')
 
+class EditAnswer(View):
+    def get(self, request, pk):
+        answer = get_object_or_404(Answer, pk=pk)
+        pass
+
+    def ost(self, request, pk):
+        pass
+
+
+class EditQuestion(View):
+    def get(self, request, pk):
+        question = get_object_or_404(Question, pk=pk)
+        pass
+
+    def post(self, request, pk):
+        pass
+
+
 class SearchQuestions(View):
     def get(self, request):
         query = request.GET.get('query')

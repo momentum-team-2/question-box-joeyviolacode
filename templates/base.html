@@ -17,7 +17,10 @@
       </div>
       <div class="header-search v-center">
         <form action="{% url 'search' %}" class="" method="get">
-            <input name="query" type="text" placeholder="Search here...">
+            <div>
+              <input name="query" type="text" placeholder="Search here...">
+              <button type="submit">Search now!</button>
+            </div>
         </form>
       </div>
       <div class="header-right v-center">
