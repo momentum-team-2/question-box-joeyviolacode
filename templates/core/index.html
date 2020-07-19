@@ -3,10 +3,12 @@
 {% block content %}
 <div>
     <div class="flex-space">
-        <h1> Here are questions</h1>  
-        <div class="v-center">
-            <a href="{% url 'add_question' %}">Ask a Question</a>
-        </div>
+        <h1> Here are questions</h1> 
+        {% if user.is_authenticated %} 
+            <div class="v-center">
+                <a href="{% url 'add_question' %}">Ask a Question</a>
+            </div>
+        {% endif %}
     </div>
     {% load markdownify %}
     <div class="question-div">
