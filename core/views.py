@@ -121,7 +121,7 @@ class EditQuestion(View):
         form = QuestionForm(instance=question)
         user = request.user
         if bool(Question.objects.filter(author=user, pk=pk).count()):
-            return render(request, 'core/edit_question.html', {"form":form})
+            return render(request, 'core/edit_question.html', {"form":form, "question":question})
         else: 
             return redirect(to="list_questions")
 
