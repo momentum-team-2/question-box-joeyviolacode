@@ -29,9 +29,11 @@
                 <div class="flex-space">
                     <p class="attribution">by <a href="{% url 'user_profile' pk=question.author.pk %}">{{question.author.username}}</a> on {{question.edited}}</p>
                     {% if question in user.questions.all %}
-                    <div>
-                        <a href="{% url 'edit_question' pk=question.pk %}">Edit Question</a>
-                        <a href="{% url 'delete_question' pk=question.pk %}">Delete Question</a>
+                    <div class="v-center">
+                        <div>
+                            <a class="edit-delete" href="{% url 'edit_question' pk=question.pk %}">Edit Question</a>
+                            <a class="edit-delete" href="{% url 'delete_question' pk=question.pk %}">Delete Question</a>
+                        </div>
                     </div>
                     {% endif %}
                 </div>
@@ -69,9 +71,11 @@
                     <div class="flex-space">
                         <p class="attribution">by <a href="{% url 'user_profile' pk=answer.author.pk %}">{{answer.author.username}}</a> on {{answer.created}}</p>
                         {% if answer in user.answers.all %}
-                        <div>
-                            <a href="{% url 'edit_answer' pk=answer.pk %}">Edit Answer</a>
-                            <a href="{% url 'delete_answer' pk=answer.pk %}">Delete Answer</a>
+                        <div class="v-center">
+                            <div>
+                                <a class="edit-delete" href="{% url 'edit_answer' pk=answer.pk %}">Edit Answer</a>
+                                <a class="edit-delete" href="{% url 'delete_answer' pk=answer.pk %}">Delete Answer</a>
+                            </div>
                         </div>
                         {% endif %}
                     </div>
