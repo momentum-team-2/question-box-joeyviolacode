@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import include, path
 from core import views as core_views
+from api import views as api_views
 
 
 urlpatterns = [
@@ -35,6 +36,13 @@ urlpatterns = [
     path('questions/search_results', core_views.SearchQuestions.as_view(), name="search"),
     path('question/<int:pk>/edit', core_views.EditQuestion.as_view(), name="edit_question"),
     path('answer/<int:pk>/edit', core_views.EditAnswer.as_view(), name="edit_answer"),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/questions', api_views.QuestionList.as_view(), name="api_question_list"),
+    path('api/questions/<int:pk>', api_views.QuestionDetail.as_view(), name="api_question_detail"),
+    path('api/answers', api_views.AnswerList.as_view(), name="api_answer_list"),
+    path('api/answers/<int:pk>', api_views.AnswerDetail.as_view(), name="api_answer_detail"),
+    path('api/questions/<int:q_pk>/answers', api_views.QuestionAnswerList.as_view(), name="api_qa_list"),
+    path('api/', api_views.api_root),
 ]
 
 if settings.DEBUG:
